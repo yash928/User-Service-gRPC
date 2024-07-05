@@ -22,8 +22,7 @@ func main() {
 	err = dbCon.Ping()
 	if err != nil {
 		log.Fatalf("Error pinging the database: %v", err)
-	} else {
-		dbCon.Exec("CREATE TABLE TEST(id varchar(10));")
+		return
 	}
 
 }

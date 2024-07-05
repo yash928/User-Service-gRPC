@@ -3,6 +3,7 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	"user-service-grpc/internal/adapters/ports"
 	"user-service-grpc/internal/core/user"
 
 	"github.com/google/uuid"
@@ -10,6 +11,12 @@ import (
 
 type UserDBImpl struct {
 	db *sql.DB
+}
+
+func NewUserDb(db *sql.DB) ports.UserDB {
+	return &UserDBImpl{
+		db: db,
+	}
 }
 
 func (u *UserDBImpl) FindUserById(id uuid.UUID) (*user.User, error) {
