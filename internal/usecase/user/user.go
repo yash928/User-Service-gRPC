@@ -15,9 +15,10 @@ type UserUsecaseImpl struct {
 	log    logging.Service
 }
 
-func NewUserUsecase(userDB ports.UserDB) user.UserUsecase {
+func NewUserUsecase(userDB ports.UserDB, logs logging.Service) user.UserUsecase {
 	return &UserUsecaseImpl{
 		userDB: userDB,
+		log:    logs,
 	}
 }
 

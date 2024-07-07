@@ -9,7 +9,13 @@ import (
 )
 
 type Config struct {
-	DB *DB
+	DB     *DB
+	Server *Server
+}
+
+type Server struct {
+	Env  string
+	Port string
 }
 
 type DB struct {
@@ -36,8 +42,14 @@ func GetConfig() *Config {
 		DBPort:     os.Getenv("DB_PORT"),
 	}
 
+	server := Server{
+		Env:  os.Getenv("ENVIRONMENT"),
+		Port: os.Getenv("APP_PORT"),
+	}
+
 	return &Config{
-		DB: &db,
+		DB:     &db,
+		Server: &server,
 	}
 }
 

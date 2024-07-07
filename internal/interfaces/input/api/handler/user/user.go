@@ -1,19 +1,29 @@
 package user
 
 import (
+	"log"
 	"net/http"
 	"user-service-grpc/internal/core/user"
 	"user-service-grpc/pkg/response"
+
+	"github.com/go-chi/chi"
 )
 
 type UserHandlerImpl struct {
 	uc user.UserUsecase
 }
 
+func NewUserHand(userUC user.UserUsecase) *UserHandlerImpl {
+	return &UserHandlerImpl{
+		uc: userUC,
+	}
+}
+
 func (u *UserHandlerImpl) FindUserById() func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		userID := r.URL.Query().Get("user_id")
+		log.Println("GET:/{user_id}")
+		userID := chi.URLParam(r, "user_id")
 
 		userDet, err := u.uc.FindUserById(r.Context(), userID)
 		if err != nil {

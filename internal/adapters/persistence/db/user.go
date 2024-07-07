@@ -34,7 +34,7 @@ func (u *UserDBImpl) SaveUser(userDet *user.User) error {
 
 func (u *UserDBImpl) FindUserById(id uuid.UUID) (*user.User, error) {
 	var userDet user.User
-	sqlQuery := "SELECT id, name, address, city, state, country, pincode, phone_number, marital_status, height FROM user WHERE id=?"
+	sqlQuery := "SELECT id, name, address, city, state, country, pincode, phone_number, marital_status, height FROM users WHERE id=?"
 
 	row := u.db.QueryRow(sqlQuery, id.String())
 
