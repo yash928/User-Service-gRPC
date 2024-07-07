@@ -23,6 +23,8 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error pinging the database: %v", err)
 		return
+	} else {
+		log.Printf("Ping successful")
 	}
 
 }

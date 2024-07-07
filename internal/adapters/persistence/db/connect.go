@@ -10,7 +10,7 @@ import (
 func Connect(cfg *config.DB) (*sql.DB, error) {
 
 	// Create the DSN (Data Source Name)
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", cfg.DBUser, cfg.DBPassword, cfg.DBHost, cfg.DBPort, cfg.DBName)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", cfg.DBUser, cfg.DBPassword, cfg.DBHost, cfg.DBPort, cfg.DBName)
 
 	// Open the MySQL connection
 	db, err := sql.Open("mysql", dsn)
