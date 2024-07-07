@@ -40,3 +40,8 @@ func GetConfig() *Config {
 		DB: &db,
 	}
 }
+
+type CtxKey struct {
+	RequestID string `json:"request_id"`
+	Session   string `json:"session"`
+}

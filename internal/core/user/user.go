@@ -1,6 +1,10 @@
 package user
 
-import "github.com/google/uuid"
+import (
+	"context"
+
+	"github.com/google/uuid"
+)
 
 type User struct {
 	Id            uuid.UUID `json:"id"`
@@ -13,4 +17,10 @@ type User struct {
 	PhoneNo       string    `json:"phone_number"`
 	MaritalStatus string    `json:"marital_status"`
 	Height        float32   `json:"height"`
+}
+
+type UserUsecase interface {
+	CreateUser(ctx context.Context, userDet *User) error
+	FindAllUsers(ctx context.Context) ([]User, error)
+	FindUserById(ctx context.Context, id string) (*User, error)
 }
