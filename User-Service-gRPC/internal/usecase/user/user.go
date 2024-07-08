@@ -53,13 +53,24 @@ func (u *UserUsecaseImpl) FindUserById(ctx context.Context, id string) (*user.Us
 	return userDet, nil
 }
 
-func (u *UserUsecaseImpl) FindAllUsers(ctx context.Context) ([]user.User, error) {
+func (u *UserUsecaseImpl) FindUsersListFromID(ctx context.Context, ids []string) ([]user.User, error) {
 
-	users, err := u.userDB.FindAllUsers()
+	users, err := u.userDB.FindUserGivenId(ids)
 	if err != nil {
 		u.log.ErrorWithContext(ctx, "FindAllUsers Error=", err)
 		return nil, user.ErrSomethingWentWrong
 	}
 
 	return users, nil
+}
+
+func (u *UserUsecaseImpl) FindUserByFilter(ctx context.Context, filter user.Filter) ([]user.User, error) {
+
+	userDet, err := u.userDB.FindUserByFilter(filter)
+	if err != nil {
+		u.log.ErrorWithContext(ctx, "FindUserByFilter Error=", err)
+		return nil, user.ErrSomethingWentWrong
+	}
+
+	return userDet, nil
 }

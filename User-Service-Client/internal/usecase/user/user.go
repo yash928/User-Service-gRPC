@@ -45,6 +45,7 @@ func (u *UserUsecaseImpl) FindUserById(ctx context.Context, id string) (*user.Us
 	}
 
 	return &user.User{
+		Id:            userDet.UserDet.Id,
 		Name:          userDet.UserDet.Name,
 		Address:       userDet.UserDet.Address,
 		City:          userDet.UserDet.City,
@@ -57,13 +58,70 @@ func (u *UserUsecaseImpl) FindUserById(ctx context.Context, id string) (*user.Us
 	}, nil
 }
 
-// func (u *UserUsecaseImpl) FindAllUsers(ctx context.Context) ([]user.User, error) {
+func (u *UserUsecaseImpl) FindUserListByID(ctx context.Context, ids []string) ([]user.User, error) {
 
-// 	users, err := u.userDB.FindAllUsers()
-// 	if err != nil {
-// 		u.log.ErrorWithContext(ctx, "FindAllUsers Error=", err)
-// 		return nil, user.ErrSomethingWentWrong
-// 	}
+	if len(ids) <= 0 {
+		u.log.ErrorWithContext(ctx, "No IDs to read")
+		return []user.User{}, nil
+	}
 
-// 	return users, nil
-// }
+	users, err := u.userServer.FindUsersListFromID(ctx, &userSrv.FindUsersListFromIDReq{
+		Id: ids,
+	})
+	if err != nil {
+		u.log.ErrorWithContext(ctx, "FindAllUsers Error=", err)
+		return nil, user.ErrSomethingWentWrong
+	}
+
+	var userList []user.User
+
+	for _, userDet := range users.UserDet {
+		userInfo := user.User{
+			Id:            userDet.Id,
+			Name:          userDet.Name,
+			Address:       userDet.Address,
+			City:          userDet.City,
+			State:         userDet.State,
+			Country:       userDet.Country,
+			Pincode:       userDet.Pincode,
+			PhoneNo:       userDet.PhoneNumber,
+			MaritalStatus: userDet.MaritalStatus,
+			Height:        userDet.Height,
+		}
+		userList = append(userList, userInfo)
+	}
+
+	return userList, nil
+}
+
+func (u *UserUsecaseImpl) FindUserByFilter(ctx context.Context, filter user.Filter) ([]user.User, error) {
+
+	users, err := u.userServer.FindUserByFilter(ctx, &userSrv.Filter{
+		MaritalStatus: filter.MaritalStatus,
+		Country:       filter.Country,
+	})
+	if err != nil {
+		u.log.ErrorWithContext(ctx, "FindUserByFilter Error=", err)
+		return nil, user.ErrSomethingWentWrong
+	}
+
+	var userList []user.User
+
+	for _, userDet := range users.UserDet {
+		userInfo := user.User{
+			Id:            userDet.Id,
+			Name:          userDet.Name,
+			Address:       userDet.Address,
+			City:          userDet.City,
+			State:         userDet.State,
+			Country:       userDet.Country,
+			Pincode:       userDet.Pincode,
+			PhoneNo:       userDet.PhoneNumber,
+			MaritalStatus: userDet.MaritalStatus,
+			Height:        userDet.Height,
+		}
+		userList = append(userList, userInfo)
+	}
+
+	return userList, nil
+}

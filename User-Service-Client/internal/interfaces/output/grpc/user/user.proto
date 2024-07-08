@@ -25,6 +25,25 @@ message FindUserByIdResponse{
     User userDet=1;
 }
 
+message FindUsersListFromIDReq{
+    repeated string id=1;
+}
+
+message FindUsersListFromIDResponse{
+    repeated User userDet=1;
+}
+
+message Filter{
+    string country=1;
+    string marital_status=2;
+}
+
+message FindUserByFilterResp{
+    repeated User userDet=1;
+}
+
 service UserService{
     rpc FindUserById(FindUserByIdInput) returns (FindUserByIdResponse);
+    rpc FindUsersListFromID(FindUsersListFromIDReq) returns (FindUsersListFromIDResponse);
+    rpc FindUserByFilter(Filter) returns(FindUserByFilterResp);
 }

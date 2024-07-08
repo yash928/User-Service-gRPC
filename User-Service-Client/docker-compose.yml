@@ -1,38 +1,12 @@
 version: '3'
 
 services:
-  db:
-    image: mysql:8.0
-    container_name: mysql_container
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - "3306:3306"
-    volumes:
-      - ~/data/mysql:/var/lib/mysql
-      - ./init/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-    networks:
-      - app-network
-
   golang:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
-    depends_on:
-      db:
-        condition: service_healthy
-    networks:
-      - app-network
+    network_mode: "host"
+
     
-networks:
-  app-network:

@@ -16,10 +16,10 @@ RUN go mod download
 COPY . .
 
 # Build the Go application
-RUN  go build -o main cmd/server/main.go
+RUN  go build -o main cmd/grpc/main.go
 
-# Expose port 8000 for the Golang application
-EXPOSE 8000
+# Expose port 9000 for the Golang application
+EXPOSE 9000
 
 # Command to run the executable
 CMD ["./main"]

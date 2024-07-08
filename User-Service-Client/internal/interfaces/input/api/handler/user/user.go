@@ -38,3 +38,48 @@ func (u *UserHandlerImpl) FindUserById() func(w http.ResponseWriter, r *http.Req
 
 	}
 }
+
+func (u *UserHandlerImpl) FindUserListByID() func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+		log.Println("GET:/")
+		idsStr := r.URL.Query()["id"]
+
+		userDet, err := u.uc.FindUserListByID(r.Context(), idsStr)
+		if err != nil {
+			u.handleError(w, r, err)
+			return
+		}
+
+		apiResponse := response.NewAPIResponse("success", http.StatusOK)
+		apiResponse.Message = "users details fetched successfully"
+		apiResponse.Data = userDet
+		response.ResponseJSON(w, r, apiResponse)
+
+	}
+}
+
+func (u *UserHandlerImpl) FindUserByFilter() func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+
+		log.Println("GET:/filter")
+
+		maritalStatus := r.URL.Query().Get("marital_status")
+		country := r.URL.Query().Get("country")
+
+		userDet, err := u.uc.FindUserByFilter(r.Context(), user.Filter{
+			MaritalStatus: maritalStatus,
+			Country:       country,
+		})
+		if err != nil {
+			u.handleError(w, r, err)
+			return
+		}
+
+		apiResponse := response.NewAPIResponse("success", http.StatusOK)
+		apiResponse.Message = "user details fetched successfully"
+		apiResponse.Data = userDet
+		response.ResponseJSON(w, r, apiResponse)
+
+	}
+}

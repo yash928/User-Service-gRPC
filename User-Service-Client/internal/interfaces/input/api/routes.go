@@ -27,6 +27,8 @@ func SetUpRoutes(userHand *user.UserHandlerImpl) *chi.Mux {
 	r.Route("/api/user", func(r chi.Router) {
 
 		r.Get("/{user_id}", userHand.FindUserById())
+		r.Get("/", userHand.FindUserListByID())
+		r.Get("/filter", userHand.FindUserByFilter())
 
 	})
 

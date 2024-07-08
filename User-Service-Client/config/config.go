@@ -9,23 +9,13 @@ import (
 )
 
 type Config struct {
-	DB              *DB
 	Server          *Server
 	InternalService *InternalService
 }
 
 type Server struct {
-	Env      string
-	Port     string
-	GRPCPort string
-}
-
-type DB struct {
-	DBUser     string
-	DBPassword string
-	DBName     string
-	DBHost     string
-	DBPort     string
+	Env  string
+	Port string
 }
 
 type InternalService struct {
@@ -40,18 +30,10 @@ func GetConfig() *Config {
 	}
 
 	// Get the environment variables
-	db := DB{
-		DBUser:     os.Getenv("DB_USER"),
-		DBPassword: os.Getenv("DB_PASSWORD"),
-		DBName:     os.Getenv("DB_NAME"),
-		DBHost:     os.Getenv("DB_HOST"),
-		DBPort:     os.Getenv("DB_PORT"),
-	}
 
 	server := Server{
-		Env:      os.Getenv("ENVIRONMENT"),
-		Port:     os.Getenv("APP_PORT"),
-		GRPCPort: os.Getenv("GRPC_PORT"),
+		Env:  os.Getenv("ENVIRONMENT"),
+		Port: os.Getenv("APP_PORT"),
 	}
 
 	internalService := InternalService{
@@ -59,7 +41,6 @@ func GetConfig() *Config {
 	}
 
 	return &Config{
-		DB:              &db,
 		Server:          &server,
 		InternalService: &internalService,
 	}

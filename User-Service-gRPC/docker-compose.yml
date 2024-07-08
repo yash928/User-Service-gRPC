@@ -19,20 +19,17 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
-    networks:
-      - app-network
+  
 
   golang:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "9000:9000"
     depends_on:
       db:
         condition: service_healthy
-    networks:
-      - app-network
+   
     
-networks:
-  app-network:
+
