@@ -9,13 +9,15 @@ import (
 )
 
 type Config struct {
-	DB     *DB
-	Server *Server
+	DB              *DB
+	Server          *Server
+	InternalService *InternalService
 }
 
 type Server struct {
-	Env  string
-	Port string
+	Env      string
+	Port     string
+	GRPCPort string
 }
 
 type DB struct {
@@ -24,6 +26,10 @@ type DB struct {
 	DBName     string
 	DBHost     string
 	DBPort     string
+}
+
+type InternalService struct {
+	UserServiceUrl string
 }
 
 func GetConfig() *Config {
@@ -43,13 +49,19 @@ func GetConfig() *Config {
 	}
 
 	server := Server{
-		Env:  os.Getenv("ENVIRONMENT"),
-		Port: os.Getenv("APP_PORT"),
+		Env:      os.Getenv("ENVIRONMENT"),
+		Port:     os.Getenv("APP_PORT"),
+		GRPCPort: os.Getenv("GRPC_PORT"),
+	}
+
+	internalService := InternalService{
+		UserServiceUrl: os.Getenv("USER_SERVICE_URL"),
 	}
 
 	return &Config{
-		DB:     &db,
-		Server: &server,
+		DB:              &db,
+		Server:          &server,
+		InternalService: &internalService,
 	}
 }
 
