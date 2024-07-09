@@ -87,7 +87,7 @@ func (u *UserUsecaseImpl) FindUserByFilter(ctx context.Context, filter user.Filt
 	}
 
 	if filter.Country != "" {
-		filter.Country = strings.ToLower(filter.Country)
+		filter.Country = strings.ToUpper(filter.Country)
 	}
 
 	err := user.ValidateMaritalStatus(filter.MaritalStatus)
