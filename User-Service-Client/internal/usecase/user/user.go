@@ -2,7 +2,6 @@ package user
 
 import (
 	"context"
-	"errors"
 	"user-service-client/internal/core/user"
 	userSrv "user-service-client/internal/interfaces/output/grpc/user"
 	"user-service-client/pkg/logging"
@@ -20,17 +19,6 @@ func NewUserUsecase(userServer userSrv.UserServiceClient, logs logging.Service) 
 	}
 }
 
-// func (u *UserUsecaseImpl) CreateUser(ctx context.Context, userDet *user.User) error {
-
-// 	err := u.userDB.SaveUser(userDet)
-// 	if err != nil {
-// 		u.log.ErrorWithContext(ctx, "SaveUser Error=", err)
-// 		return user.ErrSomethingWentWrong
-// 	}
-
-// 	return nil
-// }
-
 func (u *UserUsecaseImpl) FindUserById(ctx context.Context, id string) (*user.User, error) {
 
 	userDet, err := u.userServer.FindUserById(ctx, &userSrv.FindUserByIdInput{
@@ -38,10 +26,7 @@ func (u *UserUsecaseImpl) FindUserById(ctx context.Context, id string) (*user.Us
 	})
 	if err != nil {
 		u.log.ErrorWithContext(ctx, "FindUserById Error=", err)
-		if errors.Is(err, user.ErrDocumentNotFound) {
-			return nil, user.ErrUserNotFound
-		}
-		return nil, user.ErrSomethingWentWrong
+		return nil, user.ErrUserNotFound
 	}
 
 	return &user.User{
@@ -73,7 +58,7 @@ func (u *UserUsecaseImpl) FindUserListByID(ctx context.Context, ids []string) ([
 		return nil, user.ErrSomethingWentWrong
 	}
 
-	var userList []user.User
+	userList := []user.User{}
 
 	for _, userDet := range users.UserDet {
 		userInfo := user.User{
@@ -96,6 +81,12 @@ func (u *UserUsecaseImpl) FindUserListByID(ctx context.Context, ids []string) ([
 
 func (u *UserUsecaseImpl) FindUserByFilter(ctx context.Context, filter user.Filter) ([]user.User, error) {
 
+	err := user.ValidateMaritalStatus(filter.MaritalStatus)
+	if err != nil {
+		u.log.ErrorWithContext(ctx, "ValidateMaritalStatus Error=", err)
+		return nil, err
+	}
+
 	users, err := u.userServer.FindUserByFilter(ctx, &userSrv.Filter{
 		MaritalStatus: filter.MaritalStatus,
 		Country:       filter.Country,
@@ -105,7 +96,7 @@ func (u *UserUsecaseImpl) FindUserByFilter(ctx context.Context, filter user.Filt
 		return nil, user.ErrSomethingWentWrong
 	}
 
-	var userList []user.User
+	userList := []user.User{}
 
 	for _, userDet := range users.UserDet {
 		userInfo := user.User{

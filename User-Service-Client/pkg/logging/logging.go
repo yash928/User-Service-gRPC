@@ -3,6 +3,7 @@ package logging
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
@@ -80,8 +81,9 @@ func NewService(filename string) *standardLogger {
 			if err != nil {
 				panic(err)
 			}
-			err = os.Rename(filename, fmt.Sprintf(".logs/logger-%v.log", time.Now().Format(time.RFC3339)))
+			err = os.Rename(filename, fmt.Sprintf(".logs/logger-%v.log", time.Now().Format("2006-01-02T15-04-05")))
 			if err != nil {
+				log.Println(err)
 				panic(err)
 			}
 			out, err = os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0666)

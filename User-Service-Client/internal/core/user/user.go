@@ -23,7 +23,6 @@ type Filter struct {
 }
 
 type UserUsecase interface {
-	// CreateUser(ctx context.Context, userDet *User) error
 	FindUserById(ctx context.Context, id string) (*User, error)
 	FindUserListByID(ctx context.Context, ids []string) ([]User, error)
 	FindUserByFilter(ctx context.Context, filter Filter) ([]User, error)

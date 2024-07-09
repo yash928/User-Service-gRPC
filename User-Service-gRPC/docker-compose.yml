@@ -19,9 +19,12 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - mynetwork
   
 
-  golang:
+  grpc-server:
+    container_name: grpc-server
     build:
       context: .
       dockerfile: Dockerfile
@@ -30,6 +33,12 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    external: true
    
     
 
