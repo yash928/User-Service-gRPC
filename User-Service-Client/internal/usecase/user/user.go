@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"strings"
 	"user-service-client/internal/core/user"
 	userSrv "user-service-client/internal/interfaces/output/grpc/user"
 	"user-service-client/pkg/logging"
@@ -80,6 +81,14 @@ func (u *UserUsecaseImpl) FindUserListByID(ctx context.Context, ids []string) ([
 }
 
 func (u *UserUsecaseImpl) FindUserByFilter(ctx context.Context, filter user.Filter) ([]user.User, error) {
+
+	if filter.MaritalStatus != "" {
+		filter.MaritalStatus = strings.ToLower(filter.MaritalStatus)
+	}
+
+	if filter.Country != "" {
+		filter.Country = strings.ToLower(filter.Country)
+	}
 
 	err := user.ValidateMaritalStatus(filter.MaritalStatus)
 	if err != nil {
