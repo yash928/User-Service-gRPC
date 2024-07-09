@@ -27,9 +27,9 @@
 
 # Endpoints for grpc server:
   GET Request: localhost:8000/api
-    1. /user/{{user_id}} : to fetch user details by id
-    2. /user?id={{user_id}}&id={{user_id}} : to fetch multiple user details by given a list of ids.
-    3. /user/filter?country={{country}}&marital_status={{status}} : to fetch list of users based on filter of country and marital status
+  1. /user/{{user_id}} : to fetch user details by id
+  2. /user?id={{user_id}}&id={{user_id}} : to fetch multiple user details by given a list of ids.
+  3. /user/filter?country={{country}}&marital_status={{status}} : to fetch list of users based on filter of country and marital status
 
 # Sample Data can be used 
 INSERT INTO users (id, name, address, city, state, country, pincode, phone_number, marital_status, height)
